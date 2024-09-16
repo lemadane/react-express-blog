@@ -1,31 +1,29 @@
 import { Router } from 'express'
-import bcrypt from 'bcryptjs'
 import prisma from '../prismaClient.mjs'
 
 const postRoutes = Router()
 
-// CREATE POST
-postRoutes.post('/authors/:authorId/posts', async (req, res) => {
-  const { authorId } = req.params
-  const { title, content } = req.body
+postRoutes.post('/posts', async (req, res) => {
+  const { title, content, authorId, draft } = req.body
   try {
     const post = await prisma.post.create({
       data: {
         authorId,
         title,
         content,
+        draft,
       },
     })
-    post.id = post.id.toUpperCase()
-    res.status(201).json(post)
+    const postId = post.id.toUpperCase()
+    res.status(201).json(postId)
   } catch (error) {
+    console.error({ error })
     res.status(422).json({ error: error.message })
   }
 })
 
-// GET ALL POSTS
 postRoutes.get('/posts', async (req, res) => {
-  const { authorId = undefined, offset = 0, limit = 10 } = req.query
+  const { authorId = undefined, offset = 0, limit = 100 } = req.query
   const posts = []
   try {
     const list = await prisma.post.findMany({
@@ -44,14 +42,13 @@ postRoutes.get('/posts', async (req, res) => {
       posts,
       count: posts.length,
       offset: parseInt(offset),
-      limit:  parseInt(limit),
+      limit: parseInt(limit),
     })
   } catch (error) {
     res.status(422).json({ error: error.message })
   }
 })
 
-// GET BY ID
 postRoutes.get('/posts/:id', async (req, res) => {
   const { id } = req.params
   try {
@@ -69,47 +66,33 @@ postRoutes.get('/posts/:id', async (req, res) => {
   }
 })
 
-// UPDATE
 postRoutes.put('/posts/:id', async (req, res) => {
   const { id } = req.params
-  const { title, content } = req.body
+  const { title, content, draft } = req.body
+  console.log({ body: req.body, params: req.params })
   try {
-    const exists = await prisma.post.findUnique({
-      where: { id },
-    })
-    if (!exists) {
-      res.status(404).json({ error: 'Post not found' })
-      return
-    }
     const post = await prisma.post.update({
       where: { id },
       data: {
         title,
         content,
+        draft,
       },
     })
-    post.id = post.id.toUpperCase()
-    res.json(post)
+    res.status(200).json(post)
   } catch (error) {
     res.status(422).json({ error: error.message })
   }
 })
 
-// DELETE
 postRoutes.delete('/posts/:id', async (req, res) => {
   const { id } = req.params
   try {
-    const exists = await prisma.post.findUnique({
-      where: { id },
+    console.log({ id })
+    const post = await prisma.post.delete({
+      where: { id, },
     })
-    if (!exists) {
-      res.status(404).json({ error: 'Post not found' })
-      return
-    }
-    await prisma.post.delete({
-      where: { id },
-    })
-    res.status(204).end()
+    res.status(200).json(post)
   } catch (error) {
     res.status(422).json({ error: error.message })
   }

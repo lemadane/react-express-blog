@@ -1,10 +1,15 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
-import './index.css'
+import { ToastProvider } from './common/contexts/ToastContext.tsx'
+import { PostProvider } from './common/contexts/PostContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
+    <ToastProvider>
+      <PostProvider>
+        <App />
+      </PostProvider>
+    </ToastProvider>
+  </StrictMode>
 )

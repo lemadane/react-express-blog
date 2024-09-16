@@ -6,8 +6,16 @@ const userRoutes = express.Router()
 
 // CREATE USER
 userRoutes.post('/users', async (req, res) => {
-  const { email, firstName, middleName, lastName, birthDate, city, password } =
-    req.body
+  const {
+    email,
+    firstName,
+    middleName,
+    lastName,
+    birthDate,
+    city,
+    country,
+    password,
+  } = req.body
   try {
     const hashedPassword = await bcrypt.hash(password, 10)
     const user = await prisma.user.create({
@@ -18,6 +26,7 @@ userRoutes.post('/users', async (req, res) => {
         lastName,
         birthDate,
         city,
+        country,
         password: hashedPassword,
       },
     })
@@ -114,3 +123,5 @@ userRoutes.delete('/users/:id', async (req, res) => {
 })
 
 export default userRoutes
+
+//CM11UK2KE0000PAAYT7871A4J 

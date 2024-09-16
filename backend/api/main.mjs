@@ -19,7 +19,6 @@ app.use('/api', postRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', reactionRoutes);
 
-
 app.get('/api/ping', (_, res) => {
    res.send('pong')
 })

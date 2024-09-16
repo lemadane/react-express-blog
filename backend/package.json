@@ -1,10 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "src/main.js",
+  "main": "api/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/main.mjs"
+    "dev": "nodemon api/main.mjs"
   },
   "keywords": [],
   "author": "",

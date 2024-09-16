@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "axios": "^1.7.4",
+    "draft-js": "^0.11.7",
+    "react-froala-wysiwyg": "^4.2.1",
+    "react-quill": "^2.0.0",
+    "slate": "^0.103.0",
+    "slate-react": "^0.109.0"
+  },
+  "devDependencies": {
+    "@types/draft-js": "^0.11.18"
+  }
+}
